@@ -9,7 +9,7 @@ As everyone (or maybe just me) loves Chuck Norris jokes we want to implement a s
 
 1. Create a fork of this repository (button in the right upper corner)
 2. Clone the project (get the link by clicking the green _Clone or download button_)
-3. Import the project to your IDE (remember the guide in assignment 1)
+3. Import the project to your IDE (remember the guide in [assignment 1](https://github.com/hsro-inf-prg3/01-tools))
 4. Validate your environment by running the tests from your IntelliJ and by running `gradle test` on the command line.
 
 ## Gradle and dependency management
@@ -58,7 +58,7 @@ The following code snippet shows the structure of a simple JSON object:
 ```
 
 Gson makes use of annotations to enable you to map JSON keys to fields of your class.
-Have a look at the [docs](https://github.com/google/gson/blob/master/UserGuide.md) and complete the the model described in the following UML:
+Have a look at the [docs](https://github.com/google/gson/blob/master/UserGuide.md) and complete the model described in the following UML:
 
 ![Model spec](./assets/ModelSpec.svg)
 
@@ -93,7 +93,7 @@ If you have no clue how to implement the type adapter have a look [here](http://
 
 Retrofit is a great library to implement HTTP clients.
 To create a HTTP client you only have to create an interface containing some methods you will call later to execute HTTP calls.
-Retrofit also uses annotations to map these methods to decent decent resource paths (e.g. `getJoke(488, "Bruce", "Wayne");` maps to `GET http://api.icndb.com/jokes/488?firstName=Bruce&lastName=Wayne`).
+Retrofit also uses annotations to map these methods to decent resource paths (e.g. `getJoke(488, "Bruce", "Wayne");` maps to `GET http://api.icndb.com/jokes/488?firstName=Bruce&lastName=Wayne`).
 
 Have a look at the [docs](http://square.github.io/retrofit/) and implement the `ICNDBApi` interface as shown in the following UML:
 
@@ -114,7 +114,7 @@ curl -X GET "http://api.icndb.com/jokes/random" -H "accept: application/json"
 If you're still running on Windows you can use the PowerShell to accomplish the same like so:
 
 ```ps
-(   Invoke-WebRequest
+(Invoke-WebRequest
     -Uri http://api.icndb.com/jokes/random
     -Headers @{"accept"="application/json"}
     ).Content | ConvertFrom-Json | ConvertTo-Json
@@ -122,4 +122,4 @@ If you're still running on Windows you can use the PowerShell to accomplish the 
 
 (The part `| ConvertFrom-Json | ConvertTo-Json` is only necessary for formatting.)
 
-_Remark: to execute this command you have to remove the new lines!_
+_Remark: to execute this command you have to remove the newlines!_

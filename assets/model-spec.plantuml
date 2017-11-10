@@ -1,0 +1,17 @@
+@startuml ModelSpec
+package de.fhro.inf.prg3.model {
+    +class Joke {
+
+        -number: int
+        -content: String
+        -rubrics: String[]
+
+        +getNumber(): int
+        +setNumber(number: int): void
+        +getContent(): String
+        +setContent(content: String): void
+        +getRubrics(): String[]
+        +setRubrics(rubrics: String[]): void
+    }
+}
+@enduml

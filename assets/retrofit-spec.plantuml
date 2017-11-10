@@ -12,14 +12,6 @@ package de.fhro.inf.prg3 {
     +class App {
         +{static} main(args: String[]): void
     }
-
-    package model {
-        +class Joke {
-            -number: int
-            -content: String
-            -rubrics: String[]
-        }
-   }
 }
 
 @enduml

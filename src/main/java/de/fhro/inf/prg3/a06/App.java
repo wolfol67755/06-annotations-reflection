@@ -7,7 +7,7 @@ package de.fhro.inf.prg3.a06;
 public class App {
 
 	public static void main(String[] args) {
-		System.out.println("Hello, World!");
+		// TODO fetch a random joke and print it to STDOUT
 	}
 
 }

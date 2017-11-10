@@ -51,7 +51,7 @@ The following code snippet shows the structure of a simple JSON object:
 ```json
 {
     "id": 558,
-    "joke": Ghosts are actually caused by Chuck Norris killing people
+    "joke": "Ghosts are actually caused by Chuck Norris killing people
             faster than Death can process them.",
     "categories": []
 }
@@ -66,7 +66,7 @@ _Hint: the given JSON object describes the exact structure of the JSON objects w
 
 ### TypeAdapter
 
-Unlike the previous JSON snippet ,the actual response body of the ICNDB API looks like the following:
+Unlike the previous JSON snippet, the actual response body of the ICNDB API looks like the following:
 
 ```json
 {
@@ -91,8 +91,35 @@ If you have no clue how to implement the type adapter have a look [here](http://
 
 ## Retrofit
 
-Retrofit is a library 
+Retrofit is a great library to implement HTTP clients.
+To create a HTTP client you only have to create an interface containing some methods you will call later to execute HTTP calls.
+Retrofit also uses annotations to map these methods to decent decent resource paths (e.g. `getJoke(488, "Bruce", "Wayne");` maps to `GET http://api.icndb.com/jokes/488?firstName=Bruce&lastName=Wayne`).
+
+Have a look at the [docs](http://square.github.io/retrofit/) and implement the `ICNDBApi` interface as shown in the following UML:
+
+![Retrofic spec](./assets/RetrofitAdapter.svg)
+
+Start by implementing the `getRandomJoke()`-method.
+To test your interface extend the `main`-method in the `App` class to create an "instance" of the `ICNDBApi` and print a random joke to STDOUT and complete the test method `testCollision`.
+
+When you've completed the `getRandomJoke()`-method and you have some spare time try to add the other methods.
+
+If you are not sure if you're query strings are correct you can test them within the command line.
+Nearly every Linux system includes the cURL program which you can use like this:
 
 ```bash
 curl -X GET "http://api.icndb.com/jokes/random" -H "accept: application/json"
 ```
+
+If you're still running on Windows you can use the PowerShell to accomplish the same like so:
+
+```ps
+(   Invoke-WebRequest
+    -Uri http://api.icndb.com/jokes/random
+    -Headers @{"accept"="application/json"}
+    ).Content | ConvertFrom-Json | ConvertTo-Json
+```
+
+(The part `| ConvertFrom-Json | ConvertTo-Json` is only necessary for formatting.)
+
+_Remark: to execute this command you have to remove the new lines!_

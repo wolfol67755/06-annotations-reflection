@@ -107,8 +107,8 @@ Write a type adapter that accepts the response objects from ICNDB and outputs an
 Note that you can use annotations on the `Joke` class, but you will have to write custom code to unwrap the joke from the response object.
 For this, you have two options:
 
-a) Implement a wrapper class, add appropriate fields, and return the `Joke` once unwrapped.
-b) Unwrap the `Joke` object manually, by using the `reader`'s `.beginObject()`, `.endObject()` and `.next*()` methods.
+* Implement a wrapper class, add appropriate fields, and return the `Joke` once unwrapped.
+* Unwrap the `Joke` object manually, by using the `reader`'s `.beginObject()`, `.endObject()` and `.next*()` methods.
 
 > Note: There is no need to implement the `write` method, since we're only consuming the API, but not sending to it.
 

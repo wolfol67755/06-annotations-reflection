@@ -66,7 +66,7 @@ The following code snippet shows the structure of a simple JSON object:
 Gson makes use of annotations to map JSON keys to fields of your class.
 Have a look at the [docs](https://github.com/google/gson/blob/master/UserGuide.md) and complete the model described in the following UML:
 
-![Model spec](./assets/ModelSpec.svg)
+![Model spec](./assets/images/ModelSpec.svg)
 
 > Hint: the given JSON object describes the exact structure of the JSON objects we want to deserialize.
 > Use anntations to help gson map JSON fields to differently named Java field names.
@@ -92,7 +92,7 @@ Unlike the previous JSON snippet, the actual response body of the ICNDB API look
 The actual joke is wrapped inside a response object which indicates if the request was successfull.
 To be able to unwrap the jokes correctly you have to implement a Gson type adapter as shown in the following UML.
 
-![Gson type adapter](./assets/GsonSpec.svg)
+![Gson type adapter](./assets/images/GsonSpec.svg)
 
 In a nutshell, a type adapter is responsible to convert Java objects to JSON notation and vice versa.
 Key to this transformation is in the implementation of the following two methods:
@@ -123,7 +123,7 @@ Retrofit also uses annotations to conveniently map these methods to API resource
 
 Read through the [Retrofit documentation](http://square.github.io/retrofit/) and implement the `ICNDBApi` interface as shown in the following UML:
 
-![Retrofic spec](./assets/RetrofitAdapter.svg)
+![Retrofic spec](./assets/images/RetrofitAdapter.svg)
 
 Start by implementing the method `getRandomJoke()`.
 To test your interface, modify the `main` method in the `App` class to create an instance of the `ICNDBApi` using Retrofit's `create` method, print a random joke to `System.out`, and complete the test method `testCollision`.

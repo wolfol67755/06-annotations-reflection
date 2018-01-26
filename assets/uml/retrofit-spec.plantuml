@@ -1,6 +1,6 @@
 @startuml RetrofitAdapter
 
-package de.fhro.inf.prg3 {
+package de.fhro.inf.prg3.a06 {
 
     +interface ICNDBApi {
         getRandomJoke(): Call<Joke>

@@ -5,7 +5,8 @@ package com.google.gson {
     }
 }
 
-package de.thro.inf.prg3 {
+
+package de.thro.inf.prg3.a06 {
     +class JokeAdapter extends TypeAdapter {
     }
 }

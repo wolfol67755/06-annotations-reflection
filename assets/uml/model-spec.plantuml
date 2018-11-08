@@ -1,5 +1,5 @@
 @startuml ModelSpec
-package de.thro.inf.prg3.model {
+package de.thro.inf.prg3.a06.model {
     +class Joke {
 
         -number: int

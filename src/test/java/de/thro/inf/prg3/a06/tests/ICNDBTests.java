@@ -1,6 +1,6 @@
-package de.fhro.inf.prg3.a06.tests;
+package de.thro.inf.prg3.a06.tests;
 
-import de.fhro.inf.prg3.a06.model.Joke;
+import de.thro.inf.prg3.a06.model.Joke;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;

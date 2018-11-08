@@ -49,6 +49,9 @@ public class JokeArrayAdapter extends TypeAdapter<Joke[]> {
 			}
 		}
 
+		/* required to fix JSON document not fully consumed exception */
+		in.endObject();
+
 		return result;
 	}
 }

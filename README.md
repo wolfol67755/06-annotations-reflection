@@ -1,7 +1,8 @@
-_This is an assignment to the class [Programmieren 3](https://hsro-inf-prg3.github.io) at the [University of Applied Sciences Rosenheim](http://www.fh-rosenheim.de)._
+_This is an assignment to the class [Programmieren 3](https://hsro-inf-prg3.github.io) at the [Technical University of Applied Sciences Rosenheim](https://www.th-rosenheim.de)._
 
 
 # Assignment 6: Annotations and Reflection
+[![Travis CI](https://travis-ci.org/hsro-inf-prg3/06-annotations-reflection.svg?branch=master)](https://travis-ci.org/hsro-inf-prg3/06-annotations-reflection)
 
 In this assignment we will use Java annotations and reflection to interact with a remote REST ([Representational State Transfer](https://en.wikipedia.org/wiki/Representational_state_transfer)) API.
 As everyone (or maybe just me) loves Chuck Norris jokes we will implement a simple program to get random Chuck Norris jokes from the [ICNDB](http://www.icndb.com/) (**I**nternet **C**huck **N**orris **D**ata**b**ase).

@@ -36,7 +36,7 @@ public class JokeArrayAdapter extends TypeAdapter<Joke[]> {
 
 			/* switch-case on String (supported since Java 8) */
 			switch (in.nextName()) {
-				/* check if request was successfull */
+				/* check if request was successful */
 				case "type":
 					if (!in.nextString().equals("success")) {
 						throw new IOException();

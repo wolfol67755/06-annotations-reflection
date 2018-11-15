@@ -36,8 +36,8 @@ Gradle is designed to help you in all development phases and is extensible by pl
 In the given `build.gradle` are three plugins already applied:
 
 * `java`: brings Java support to Gradle e.g. compilation)
-* `org.junit.platform.gradle.plugin`: required to run JUnit5 tests on the command line
 * `application`: enable you to run and package the application you will develop in this assignment
+* `idea`: helps with IntelliJ import
 
 To run the `main` method in the `App` class without IntelliJ you can now use the following Gradle command on the command line:
 

@@ -1,6 +1,6 @@
-package de.thro.inf.prg3.a06;
+package ohm.softa.a06;
 
-import de.thro.inf.prg3.a06.model.Joke;
+import ohm.softa.a06.model.Joke;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

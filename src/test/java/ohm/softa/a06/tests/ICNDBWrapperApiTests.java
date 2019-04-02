@@ -1,11 +1,8 @@
-package de.thro.inf.prg3.a06.tests;
+package ohm.softa.a06.tests;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import de.thro.inf.prg3.a06.ICNDBApi;
-import de.thro.inf.prg3.a06.adapters.JokeAdapter;
-import de.thro.inf.prg3.a06.adapters.JokeArrayAdapter;
-import de.thro.inf.prg3.a06.model.Joke;
+import ohm.softa.a06.ICNDBWrapperApi;
+import ohm.softa.a06.model.Joke;
+import ohm.softa.a06.model.wrapper.ApiResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,33 +19,26 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author Peter Kurfer
- * Created on 11/10/17.
+ * Created on 11/13/17.
  */
-class ICNDBTests {
-
+class ICNDBWrapperApiTests {
 	private static final Logger logger = LogManager.getLogger(ICNDBTests.class);
 	private static final int REQUEST_COUNT = 100;
 
-	private ICNDBApi icndbApi;
+	private ICNDBWrapperApi icndbApi;
 
 	@BeforeEach
 	void setup() {
-		Gson gson = new GsonBuilder()
-				.registerTypeAdapter(Joke.class, new JokeAdapter())
-				.registerTypeAdapter(Joke[].class, new JokeArrayAdapter())
-				.create();
 
 		Retrofit retrofit = new Retrofit.Builder()
-				.addConverterFactory(GsonConverterFactory.create(gson))
+				.addConverterFactory(GsonConverterFactory.create())
 				.baseUrl("http://api.icndb.com")
 				.build();
 
-		icndbApi = retrofit.create(ICNDBApi.class);
+		icndbApi = retrofit.create(ICNDBWrapperApi.class);
 	}
 
 	@Test
@@ -58,12 +48,12 @@ class ICNDBTests {
 		boolean collision = false;
 
 		while (requests++ < REQUEST_COUNT) {
-			Call<Joke> jokeCall = icndbApi.getRandomJoke();
-			Response<Joke> jokeResponse = jokeCall.execute();
-			if(!jokeResponse.isSuccessful()) continue;
-			Joke j = jokeResponse.body();
+			Call<ApiResult<Joke>> jokeCall = icndbApi.getRandomJoke();
+			Response<ApiResult<Joke>> jokeResponse = jokeCall.execute();
+			if (!jokeResponse.isSuccessful()) continue;
+			Joke j = jokeResponse.body().getValue();
 
-			if(jokeNumbers.contains(j.getNumber())) {
+			if (jokeNumbers.contains(j.getNumber())) {
 				logger.info(String.format("Collision at joke %s", j.getNumber()));
 				collision = true;
 				break;
@@ -78,7 +68,7 @@ class ICNDBTests {
 
 	@Test
 	void testGetRandomJokeWithChangedName() throws IOException {
-		Joke j = icndbApi.getRandomJoke("Bruce", "Wayne").execute().body();
+		Joke j = icndbApi.getRandomJoke("Bruce", "Wayne").execute().body().getValue();
 		assertNotNull(j);
 		assertFalse(j.getContent().contains("Chuck"));
 		assertFalse(j.getContent().contains("Norris"));
@@ -87,22 +77,22 @@ class ICNDBTests {
 
 	@Test
 	void testGetMultipleRandomJokes() throws IOException {
-		Joke[] jokes = icndbApi.getRandomJokes(5).execute().body();
+		List<Joke> jokes = icndbApi.getRandomJokes(5).execute().body().getValue();
 		assertNotNull(jokes);
-		assertEquals(5, jokes.length);
+		assertEquals(5, jokes.size());
 
-		for(Joke j : jokes) {
+		for (Joke j : jokes) {
 			logger.info(j.toString());
 		}
 	}
 
 	@Test
 	void testGetMultipleRandomJokesWithChangedName() throws IOException {
-		Joke[] jokes = icndbApi.getRandomJokes(5, "Bruce", "Wayne").execute().body();
+		List<Joke> jokes = icndbApi.getRandomJokes(5, "Bruce", "Wayne").execute().body().getValue();
 		assertNotNull(jokes);
-		assertEquals(5, jokes.length);
+		assertEquals(5, jokes.size());
 
-		for(Joke j : jokes) {
+		for (Joke j : jokes) {
 			assertFalse(j.getContent().contains("Chuck"));
 			assertFalse(j.getContent().contains("Norris"));
 			logger.info(j.toString());
@@ -111,48 +101,41 @@ class ICNDBTests {
 
 	@Test
 	void testGetMultipleRandomJokesWithCategoriesFilter() throws IOException {
-		Joke[] jokes = icndbApi.getRandomJokes(5, new String[]{"nerdy"}).execute().body();
+		List<Joke> jokes = icndbApi.getRandomJokes(5, new String[]{"nerdy"}).execute().body().getValue();
 
 		assertNotNull(jokes);
-		assertEquals(5, jokes.length);
+		assertEquals(5, jokes.size());
 
-		for(Joke j : jokes) {
-			boolean containedNerdy = false;
-			for(String rubric : j.getRubrics()) {
-				/* shorthand for containedNerdy = containedNerdy | rubric.equals("nerdy");  */
-				containedNerdy |= rubric.equals("nerdy");
-			}
-			assertTrue(containedNerdy);
-			logger.info(j.toString());
-		}
+		jokes.forEach(joke -> {
+			assertTrue(joke.getRubrics().stream().anyMatch(r -> r.equals("nerdy")));
+			logger.info(joke.toString());
+		});
 	}
 
 	@Test
 	void testGetMultipleRandomJokesWithCategoriesFilterAndChangedName() throws IOException {
-		Joke[] jokes = icndbApi.getRandomJokes(5, new String[]{"nerdy"}, "Bruce", "Wayne").execute().body();
+		List<Joke> jokes = icndbApi.getRandomJokes(5, new String[]{"nerdy"}, "Bruce", "Wayne").execute().body().getValue();
 
 		assertNotNull(jokes);
-		assertEquals(5, jokes.length);
+		assertEquals(5, jokes.size());
 
-		for(Joke j : jokes) {
-			assertFalse(j.getContent().contains("Chuck"));
-			assertFalse(j.getContent().contains("Norris"));
-			assertTrue(j.getRubrics().stream().anyMatch(r -> r.equals("nerdy")));
-			logger.info(j.toString());
-		}
+		jokes.forEach(joke -> {
+			assertFalse(joke.getContent().contains("Chuck"));
+			assertFalse(joke.getContent().contains("Norris"));
+			assertTrue(joke.getRubrics().stream().anyMatch(r -> r.equals("nerdy")));
+		});
 	}
 
 	@Test
 	void testGetJokeById() throws IOException {
-
 		List<Integer> randomIds = new ArrayList<>(10);
 
-		for(int i = 0; i < 10; i++) {
-			randomIds.add(icndbApi.getRandomJoke().execute().body().getNumber());
+		for (int i = 0; i < 10; i++) {
+			randomIds.add(icndbApi.getRandomJoke().execute().body().getValue().getNumber());
 		}
 
-		for(Integer id : randomIds) {
-			Joke j = icndbApi.getJoke(id).execute().body();
+		for (Integer id : randomIds) {
+			Joke j = icndbApi.getJoke(id).execute().body().getValue();
 			assertNotNull(j);
 			assertTrue(randomIds.contains(j.getNumber()));
 			logger.info(j.toString());

@@ -1,4 +1,4 @@
-package de.thro.inf.prg3.a06.model.wrapper;
+package ohm.softa.a06.model.wrapper;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

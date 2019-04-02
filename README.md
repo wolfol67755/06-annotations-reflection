@@ -1,4 +1,4 @@
-_This is an assignment to the class [Programmieren 3](https://hsro-inf-prg3.github.io) at the [Technical University of Applied Sciences Rosenheim](https://www.th-rosenheim.de)._
+_This is an assignment to the [Software Architecture](https://ohm-softa.github.io) class at the [Technische Hochschule Nürnberg](http://www.th-nuernberg.de)._
 
 
 # Assignment 6: Annotations and Reflection
@@ -29,21 +29,31 @@ To complete this assignment you will need the following libraries:
 With Gradle, project dependencies (both at compile and runtime) are specified in the `build.gradle` file, in the `dependencies` section.
 Open the existing [build.gradle](./build.gradle) file and inspect the `dependencies` object (Gradle uses [Groovy](http://groovy-lang.org/), a language similar to Java and Javascript).
 Every dependency has a scope where it will be available.
-To use a library across the whole project, declare it with the scope `compile`; libraries which are only required in the test cases should be in the scope `testCompile`.
-There there are a few other scopes, but these two are enough for now.
+To use a library across the whole project, declare it with the scope `implementation`.
 
 Gradle is designed to help you in all development phases and is extensible by plugins.
 In the given `build.gradle` are three plugins already applied:
 
 * `java`: brings Java support to Gradle e.g. compilation)
-* `org.junit.platform.gradle.plugin`: required to run JUnit5 tests on the command line
 * `application`: enable you to run and package the application you will develop in this assignment
+* `idea`: helps with IntelliJ import
 
 To run the `main` method in the `App` class without IntelliJ you can now use the following Gradle command on the command line:
 
 ```bash
 gradle run
 ```
+
+
+## Overview
+
+The hard part of this assigment is you need to combine three parts to form the whole program:
+
+- Gson for serialization
+- Retrofit for HTTP requests
+- A Gson type adapter to handle the status of the request response
+
+It is strongly advised to read through the whole assignment and related documentations first; having the complete picture before starting with the parts helps a lot!
 
 
 ## Gson
@@ -58,10 +68,30 @@ The following code snippet shows the structure of a simple JSON object:
 ```json
 {
     "id": 558,
-    "joke": "Ghosts are actually caused by Chuck Norris killing people
-            faster than Death can process them.",
+    "joke": "Ghosts are actually caused by Chuck Norris killing people faster than Death can process them.",
     "categories": []
 }
+```
+
+The most basic use case is to de/serialize objects; by defaut, Gson uses reflection to determine the properties.
+
+```java
+class Joke {
+  int id;
+  String joke;
+  String[] categories;
+}
+```
+
+```java
+Gson gson = new Gson();
+
+// JSON String --> Object
+Joke j = gson.fromJson("{\"id\": 0, \"joke\": \"Haha.\"}", Joke.class);
+// categories remains `null`
+
+// Objec --> JSON String
+String json = gson.toJson(j);
 ```
 
 Gson makes use of annotations to map JSON keys to fields of your class.
@@ -72,10 +102,13 @@ Have a look at the [docs](https://github.com/google/gson/blob/master/UserGuide.m
 > Hint: the given JSON object describes the exact structure of the JSON objects we want to deserialize.
 > Use anntations to help gson map JSON fields to differently named Java field names.
 
+- Import Gson to your project
+- Familiarize yourself with Gson by trying a few examples
+- Get familiar with the `@SerializedName` annotation
 
-### TypeAdapter
+## Retrofit and Gson
 
-Unlike the previous JSON snippet, the actual response body of the ICNDB API looks like the following:
+As you could see from the examples above, the actual response body of the ICNDB API looks like the following:
 
 ```json
 {
@@ -90,21 +123,25 @@ Unlike the previous JSON snippet, the actual response body of the ICNDB API look
 }
 ```
 
-The actual joke is wrapped inside a response object which indicates if the request was successfull.
-To be able to unwrap the jokes correctly you have to implement a Gson type adapter as shown in the following UML.
+The actual joke (`Joke`) is wrapped inside a response object which indicates if the request was successfull.
+To be able to unwrap the jokes correctly (or throw an exception if there is no joke) you need to implement a Gson type adapter as shown in the following UML.
 
 ![Gson type adapter](./assets/images/GsonSpec.svg)
 
-In a nutshell, a type adapter is responsible to convert Java objects to JSON notation and vice versa.
+In a nutshell, a (Gson) type adapter is responsible to convert Java objects to JSON notation and vice versa.
 Key to this transformation is in the implementation of the following two methods:
 
 ```java
-public YourClass read(final JsonReader reader) { ... }
-public void write(final JsonWriter writer, final YourClass inst) { ... }
+public abstract class TypeAdapter<T> {
+	public abstract T read(final JsonReader reader);
+ 	public abstract void write(final JsonWriter writer, final T inst);
 
+	// ...
+}
 ```
 
-Write a type adapter that accepts the response objects from ICNDB and outputs an instance of `Joke`.
+- Write a type adapter that accepts the response objects from ICNDB and outputs an instance of `Joke`.
+- Register the type adapter with your Retrofit instance
 Note that you can use annotations on the `Joke` class, but you will have to write custom code to unwrap the joke from the response object.
 For this, you have two options:
 
@@ -126,12 +163,11 @@ Read through the [Retrofit documentation](http://square.github.io/retrofit/) and
 
 ![Retrofic spec](./assets/images/RetrofitAdapter.svg)
 
-Start by implementing the method `getRandomJoke()`.
-To test your interface, modify the `main` method in the `App` class to create an instance of the `ICNDBApi` using Retrofit's `create` method, print a random joke to `System.out`, and complete the test method `testCollision`.
-
-When you've completed the `getRandomJoke()` method and you have some spare time try to add the other methods.
-
-If you are not sure if your query strings are correct you can test them within the command line using `curl` or in a browser extension such as [Postman](https://www.getpostman.com/).
+- Start by implementing the method `getRandomJoke()`; use the appropriate annotations to decodate the interface method.
+- Modify the `main` method in the `App` class to create an instance of the `ICNDBApi` using `Retrofit.Builder`. You need to add a converter factory that helps converting the JSON response to an object; you can set Gson using `GsonConverterFactory.create()`.
+- Print a random joke to `System.out`, and complete the test method `testCollision`. Recall that you work with `Call` objects that need to be executed before you can retrieve the response body.
+- After completing the `getRandomJoke()` method try to add the other methods.
+- If you are not sure if your query strings are correct you can test them within the command line using `curl` or in a browser extension such as [Postman](https://www.getpostman.com/).
 
 Most unix systems will provide the cURL program:
 

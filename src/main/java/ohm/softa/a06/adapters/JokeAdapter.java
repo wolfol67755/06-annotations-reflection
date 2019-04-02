@@ -1,10 +1,10 @@
-package de.thro.inf.prg3.a06.adapters;
+package ohm.softa.a06.adapters;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import de.thro.inf.prg3.a06.model.Joke;
+import ohm.softa.a06.model.Joke;
 
 import java.io.IOException;
 

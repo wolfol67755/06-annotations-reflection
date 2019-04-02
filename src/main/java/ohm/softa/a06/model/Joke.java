@@ -1,4 +1,4 @@
-package de.thro.inf.prg3.a06.model;
+package ohm.softa.a06.model;
 
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;

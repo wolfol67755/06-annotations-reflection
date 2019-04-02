@@ -1,4 +1,4 @@
-package de.thro.inf.prg3.a06;
+package ohm.softa.a06;
 
 /**
  * @author Peter Kurfer

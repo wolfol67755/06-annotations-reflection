@@ -1,6 +1,6 @@
-package de.thro.inf.prg3.a06.tests;
+package ohm.softa.a06.tests;
 
-import de.thro.inf.prg3.a06.model.Joke;
+import ohm.softa.a06.model.Joke;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;

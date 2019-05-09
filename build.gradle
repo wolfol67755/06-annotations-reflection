@@ -16,6 +16,10 @@ repositories {
 }
 
 dependencies {
+	implementation 'com.google.code.gson:gson:2.8.5'
+	implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+	implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+
     implementation("org.apache.commons:commons-lang3:$commons_lang3_version")
     implementation("org.apache.logging.log4j:log4j-api:${log4j2Version}")
     implementation("org.apache.logging.log4j:log4j-core:${log4j2Version}")

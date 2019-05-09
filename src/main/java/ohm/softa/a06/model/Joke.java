@@ -1,5 +1,6 @@
 package ohm.softa.a06.model;
 
+import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -9,17 +10,27 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * Created on 11/9/17.
  */
 public final class Joke {
+	@SerializedName("id")
 	private int number;
+	@SerializedName("joke")
 	private String content;
+	@SerializedName("categories")
 	private String[] rubrics;
 
 	public int getNumber() {
 		return number;
 	}
+	//public void setNumber(int number) { this.number = number; }
 
 	public String getContent() {
 		return content;
 	}
+	//public void setContent(String content) { this.content = content; }
+
+	//public String[] getRubrics() { return rubrics; }
+	//public void setRubrics(String[] rubrics) { this.rubrics = rubrics; }
+
+
 
 	@Override
 	public boolean equals(Object o) {
